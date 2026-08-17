@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+/* ── ForTool design tokeny — zdroj pravdy: design handoff (_redesign_zip/README.md) ──
+   Generují Tailwind utility (bg-signal, text-ink, font-mono-plex, …)
+   a zároveň CSS proměnné var(--color-*) pro inline styly v Dashboard/Admin. */
+@theme {
+  /* navy (ink) — tmavé plochy, primární tlačítka, cizí rezervace */
+  --color-ink:            #0C1B2A;
+  --color-ink-hover:      #122740;
+
+  /* azur (signal) — akcent, CTA, vlastní rezervace, vybraný den */
+  --color-signal:         #00A8D6;
+  --color-signal-hover:   #0AB8E8;
+  --color-signal-light:   #5BD7F5; /* azur na tmavém podkladu (časy, iniciály, spoj vícedenních) */
+  --color-signal-deep:    #03354A; /* text na azurovém podkladu */
+  --color-signal-link:    #03708F; /* odkazy, "Upravit" */
+  --color-signal-bg:      #F0FAFD; /* světlé podbarvení (dnešek, info boxy) */
+  --color-signal-border:  #B8E6F5; /* border k signal-bg */
+
+  /* plochy */
+  --color-base:           #F7F6F2; /* podklad stránky — teplá off-white */
+  --color-field:          #FFFFFF; /* karty, inputy */
+  --color-line:           #E3E1D9; /* rámečky karet */
+  --color-line-grid:      #F4F2EB; /* jemná mřížka kalendáře, hover řádků menu */
+  --color-line-row:       #EFEDE6; /* oddělovače řádků knihy */
+  --color-input:          #D8D5CB; /* rámečky inputů/tlačítek */
+  --color-input-bg:       #FAF9F5; /* podklad inputů */
+
+  /* text */
+  --color-ink-50:         #6B6857; /* sekundární text */
+  --color-ink-30:         #8A8778; /* popisky, meta */
+  --color-ink-20:         #A8A594; /* slabší meta (hodiny v mřížce) */
+  --color-ink-10:         #C4C1B4; /* nejslabší ("PŘEPNOUT →") */
+
+  /* sémantika */
+  --color-success:        #1E7A3C; /* tlačítko Schválit */
+  --color-success-hover:  #25913F;
+  --color-dot-free:       #3FCF63; /* status tečka volná (světlá) */
+  --color-dot-free-deep:  #2BA84A; /* status tečka volná (sytější) */
+  --color-warn:           #E67E22; /* status tečka obsazená */
+  --color-danger:         #C0392B; /* mazání, Zamítnout, Odhlásit */
+  --color-danger-hover:   #A93226;
+  --color-danger-bg:      #FBEFED;
+  --color-danger-border:  #F0D4D0;
+  --color-note:           #9A6B1F; /* upozornění "čeká na schválení" */
+  --color-note-bg:        #FEF7EC;
+  --color-note-border:    #F2DFC0;
+
+  /* typografie */
+  --font-sg:   'Space Grotesk', system-ui, sans-serif;   /* nadpisy, UI text, tlačítka */
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace; /* časy, SPZ, štítky, meta, badge */
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

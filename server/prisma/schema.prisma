@@ -1,0 +1,78 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum AccountStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id            Int           @id @default(autoincrement())
+  email         String        @unique
+  password      String
+  firstName     String
+  lastName      String
+  isAdmin       Boolean       @default(false)
+  status        AccountStatus @default(PENDING)
+  resetToken    String?
+  resetTokenExp DateTime?
+  // Rychlá cache pro gate (poslední potvrzení); plná historie je v RulesAcceptance
+  rulesAcceptedAt      DateTime?
+  rulesAcceptedVersion Int?
+  createdAt     DateTime      @default(now())
+  bookings      Booking[]
+  publishedRules   RulesVersion[]
+  rulesAcceptances RulesAcceptance[]
+}
+
+// Append-only historie znění pravidel; id = číslo verze, aktuální = nejvyšší id.
+// Staré verze se nikdy nemažou — nesou důkaz, co přesně uživatel potvrdil.
+model RulesVersion {
+  id          Int      @id @default(autoincrement())
+  sections    Json
+  createdAt   DateTime @default(now())
+  createdById Int?
+  createdBy   User?    @relation(fields: [createdById], references: [id])
+}
+
+// Append-only historie potvrzení (kdo, kterou verzi, kdy)
+model RulesAcceptance {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  version    Int
+  acceptedAt DateTime @default(now())
+
+  @@unique([userId, version])
+}
+
+model Vehicle {
+  id        Int       @id @default(autoincrement())
+  name      String
+  plate     String
+  photoUrl  String?
+  active    Boolean   @default(true)
+  sortOrder Int       @default(0)
+  createdAt DateTime  @default(now())
+  bookings  Booking[]
+}
+
+model Booking {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  vehicleId Int
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id])
+  dateFrom  DateTime
+  dateTo    DateTime
+  purpose   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
